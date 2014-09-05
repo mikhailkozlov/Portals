@@ -31,6 +31,7 @@ class PortalsServiceProvider extends ServiceProvider
 
         // insert routes into app
         foreach ($portals as $p) {
+            // @TODO  - add routes and make sure we enforce permissions
             \Route::get($p->slug, 'PortalsController@index'); // You may use get/post
             \Route::get($p->slug . '/{page_slug}', 'PagesController@show'); // You may use get/post
         }

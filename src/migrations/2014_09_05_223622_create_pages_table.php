@@ -22,11 +22,11 @@ class CreatePagesTable extends Migration
                 $table->string('slug', 250);
                 $table->string('title', 250);
                 $table->text('content');
-                $table->text('excerpt');
-                $table->string('type', 20);
-                $table->string('status', 20);
-                $table->bigInteger('parent_id');
-                $table->integer('menu_order');
+                $table->text('excerpt')->nullable();
+                $table->string('type', 20)->default('page');
+                $table->string('status', 20)->default('draft');
+                $table->bigInteger('parent_id')->nullable();
+                $table->integer('menu_order')->default(0);
                 $table->timestamps();
                 $table->softDeletes();
             }

@@ -20,7 +20,8 @@
     "autoload": {
         "classmap": [
             "src/controllers",
-            "src/migrations"
+            "src/migrations",
+            "src/seeds"
         ],
         "psr-0": {
             "Sugarcrm\\Portals\\": "src/"
