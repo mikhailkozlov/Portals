@@ -1,15 +1,21 @@
 {
     "name": "sugarcrm/portals",
     "description": "Laravel driven portal system",
+    "keywords": ["framework", "laravel","CMS"],
     "authors": [
         {
             "name": "SugarCRM Inc",
             "email": "iapps@sugarcrm.com"
+        },
+        {
+            "name": "Mikhail Kozlov",
+            "email": "mkozlov@sugarcrm.com"
         }
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*"
+        "illuminate/support": "4.1.*",
+        "aws/aws-sdk-php": "2.6.15"
     },
     "autoload": {
         "classmap": [
