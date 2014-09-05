@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portal extends Model
 {
+
     public function frontPage()
     {
         return $this->hasOne('Sugarcrm\Portals\Repo\Page')->where('id', '=', $this->page_id);

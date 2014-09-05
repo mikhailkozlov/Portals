@@ -22,16 +22,18 @@ class PortalsServiceProvider extends ServiceProvider
     {
         $this->package('sugarcrm/portals');
 
+        include __DIR__ . '/../../routes.php';
+
         /**
          * Register routes
          */
         $portals = Portal::all(array('slug'));
 
+        // insert routes into app
         foreach ($portals as $p) {
             \Route::get($p->slug, 'PortalsController@index'); // You may use get/post
-            \Route::get($p->slug . '/{page}', 'PagesController@show'); // You may use get/post
+            \Route::get($p->slug . '/{page_slug}', 'PagesController@show'); // You may use get/post
         }
-        \Route::get('files/{file}', 'FilesController@get'); // You may use get/post
     }
 
     /**

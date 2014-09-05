@@ -1,5 +1,6 @@
 <?php
 
+use Sugarcrm\Portals\Helpers\MenuHelper;
 
 class PortalsController extends \BaseController
 {
@@ -14,6 +15,12 @@ class PortalsController extends \BaseController
         parent::__construct();
     }
 
+    /**
+     *
+     * Display portal index
+     *
+     * @return mixed
+     */
     public function index()
     {
         $portal = $this->portal->where('slug','=',\Request::path())->first();
@@ -37,24 +44,4 @@ class PortalsController extends \BaseController
             )
         );
     }
-
-//    public function getPage($portal_slug, $page_slug)
-//    {
-//        $portal = Portal::where('slug','=',$portal_slug)->first();
-//
-//        $page = $portal->pages()->where('slug','=',$page_slug)->first();
-//
-//        $pages = $portal->pages()->select('id', 'title', 'parent_id', 'slug')->get();
-//        $menu  = new \MenuHelper($pages,'internal/'.$portal->slug.'/');
-//        $menu  = $menu->itemArray();
-//
-//
-//        $this->layout->content = \View::make('internal.page',
-//            array(
-//                'portal'     => $portal,
-//                'page'       => $page,
-//                'portalMenu' => $menu,
-//            )
-//        );
-//    }
 }
