@@ -21,9 +21,11 @@ class PortalsController extends \BaseController
      */
     public function index()
     {
+        $portals = $this->portal->paginate(15);
+
         $this->layout->content = \View::make(
-            \Config::get('admin.portals.index', 'portals::portals.index'),
-            array()
+            \Config::get('portals.admin.index', 'portals::admin.portals.index'),
+            compact('portals')
         );
     }
 
@@ -56,7 +58,12 @@ class PortalsController extends \BaseController
      */
     public function show($id)
     {
-        return View::make('portals.show');
+        $portal = $this->portal->find($id);
+
+        $this->layout->content = \View::make(
+            \Config::get('portals.admin.show', 'portals::admin.portals.show'),
+            compact('portal')
+        );
     }
 
     /**

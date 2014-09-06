@@ -23,5 +23,13 @@
             )
         );
 
+        \Route::get(
+            'portals/{id}',
+            array(
+                'as'   => 'admin.portals.show',
+                'uses' => 'Admin\PortalsController@show'
+            )
+        );
+
     }
 );

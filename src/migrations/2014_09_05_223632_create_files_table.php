@@ -17,6 +17,7 @@ class CreateFilesTable extends Migration
             'files',
             function (Blueprint $table) {
                 $table->bigIncrements('id');
+                $table->integer('user_id');
                 $table->string('title', 250);
                 $table->text('description');
                 $table->text('permissions'); // we should be able to store multiple permissions

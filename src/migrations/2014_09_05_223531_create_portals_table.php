@@ -19,9 +19,11 @@ class CreatePortalsTable extends Migration
                 $table->bigIncrements('id');
                 $table->string('slug', 250);
                 $table->string('title', 250);
+                $table->integer('user_id');
                 $table->bigInteger('page_id')->nullable();
                 $table->text('keywords');
                 $table->text('description');
+                $table->string('status', 20)->default('draft');
                 $table->integer('menu_depth')->default(0);
                 $table->timestamps();
                 $table->softDeletes();

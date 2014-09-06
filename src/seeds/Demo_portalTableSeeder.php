@@ -20,6 +20,7 @@ class Demo_portalTableSeeder extends Seeder
             "keywords"    => "",
             "description" => "<strong>Welcome to Demo Portal!</strong> You can access frequently asked questions, common forms and templates.",
             "menu_depth"  => 1,
+            "status"      => 'published',
             "created_at"  => \Carbon\Carbon::now()->toDateTimeString(),
             "updated_at"  => \Carbon\Carbon::now()->toDateTimeString(),
         );
