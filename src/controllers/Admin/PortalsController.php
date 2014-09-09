@@ -1,5 +1,7 @@
 <?php namespace Admin;
 
+use \Sugarcrm\Portals\Services\Validators\PortalValidator;
+
 class PortalsController extends \BaseController
 {
 
@@ -36,7 +38,13 @@ class PortalsController extends \BaseController
      */
     public function create()
     {
-        return View::make('portals.create');
+        $portal = $this->portal;
+        $portal->status_opt = array('draft' => 'draft', 'published' => 'published');
+
+        $this->layout->content = \View::make(
+            \Config::get('portals.admin.edit', 'portals::admin.portals.edit'),
+            compact('portal')
+        );
     }
 
     /**
@@ -46,55 +54,85 @@ class PortalsController extends \BaseController
      */
     public function store()
     {
-        //
+        $input = \Input::all();
+        $validation = new PortalValidator($input);
+        if (!$validation->passes()) {
+            return \Redirect::back()->withInput()->withErrors($validation->getErrors());
+        }
+
+        $fields = array(
+            'id' => $id,
+            'slug' => $input['slug'],
+            'title' => $input['title'],
+            'keywords' => $input['keywords'],
+            'description' => $input['description'],
+            'status' => $input['status'],
+        );
+        $this->portal->save($fields);
+
+        return \Redirect::route('admin.portals.edit', array($id))->with('success', "Portal `{$input['title']}` has been saved");
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function show($id)
     {
-        $portal = $this->portal->find($id);
 
-        $this->layout->content = \View::make(
-            \Config::get('portals.admin.show', 'portals::admin.portals.show'),
-            compact('portal')
-        );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function edit($id)
     {
-        return View::make('portals.edit');
+        $portal = $this->portal->find($id);
+        $portal->status_opt = array('draft' => 'draft', 'published' => 'published');
+
+        $this->layout->content = \View::make(
+            \Config::get('portals.admin.edit', 'portals::admin.portals.edit'),
+            compact('portal')
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function update($id)
     {
-        //
+        $input = \Input::all();
+        $validation = new PortalValidator($input);
+        if (!$validation->passes()) {
+            return \Redirect::back()->withInput()->withErrors($validation->getErrors());
+        }
+
+        $fields = array(
+            'id' => $id,
+            'slug' => $input['slug'],
+            'title' => $input['title'],
+            'keywords' => $input['keywords'],
+            'description' => $input['description'],
+            'status' => $input['status'],
+        );
+        $this->portal->save($fields);
+
+        return \Redirect::route('admin.portals.edit', array($id))->with('success', "Portal `{$input['title']}` has been saved");
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function destroy($id)
