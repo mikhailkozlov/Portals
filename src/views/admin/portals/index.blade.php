@@ -13,6 +13,7 @@ Content Portals - Admin -
 <div class="row">
     <div class="col-sm-9">
         <h1>Content Portals</h1>
+        <div><a href="{{ route('admin.portals.create') }}">Create</a></div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -28,7 +29,7 @@ Content Portals - Admin -
                 <td>{{ $portal->title }}</td>
                 <td>{{ $portal->slug }}</td>
                 <td>{{ $portal->status }}</td>
-                <td><a href="{{ route('admin.portals.show', $portal->id) }}">Edit</a></td>
+                <td><a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
             </tr>
             @endforeach
             </tbody>
