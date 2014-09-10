@@ -1,6 +1,6 @@
 @section('crumb')
 <li><a href="/admin">Admin</a></li>
-<li><a href="{{ route('admin.pages.view') }}">Content Pages</a></li>
+<li><a href="{{ route('admin.pages.view', array($page->portal_id)) }}">Content Pages</a></li>
 <li class="active">{{{ $page->title ? $page->title : 'Create page' }}}</li>
 @stop
 
@@ -14,7 +14,7 @@
 
         <h1>{{{ $page->title ? $page->title : 'Create page' }}}</h1>
 
-        {{Former::vertical_open( route('admin.pages.update', array($page->id)), 'PUT') }}
+        {{Former::vertical_open( route('admin.pages.update', array($page->portal_id, $page->id)), 'PUT') }}
 
         {{ Former::populate($page) }}
 

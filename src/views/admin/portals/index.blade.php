@@ -28,7 +28,7 @@ Content Portals - Admin -
                         <td>{{ $portal->title }}</td>
                         <td>{{ $portal->slug }}</td>
                         <td>{{ $portal->status }}</td>
-                        <td><a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
+                        <td><a href="{{ route('admin.pages.view', $portal->id) }}">Pages</a> | <a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
                     </tr>
                 @endforeach
             </tbody>

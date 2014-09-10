@@ -54,7 +54,7 @@ class PortalsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array();
+        return array('portals');
     }
 
 }

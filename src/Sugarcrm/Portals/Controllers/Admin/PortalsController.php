@@ -33,7 +33,7 @@ class PortalsController extends BaseController
         $portals = $this->portal->paginate(15);
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.index', 'portals::admin.portals.index'),
+            Config::get('portals::portals.admin.index', 'portals::admin.portals.index'),
             compact('portals')
         );
     }
@@ -45,10 +45,10 @@ class PortalsController extends BaseController
      */
     public function create()
     {
-        $status_opt = Config::get('portals.status_options');
+        $status_opt = Config::get('portals::portals.status_options');
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.create', 'portals::admin.portals.create'),
+            Config::get('portals::portals.admin.create', 'portals::admin.portals.create'),
             compact('status_opt')
         );
     }
@@ -95,10 +95,10 @@ class PortalsController extends BaseController
     public function edit($id)
     {
         $portal     = $this->portal->find($id);
-        $status_opt = Config::get('portals.status_options');
+        $status_opt = Config::get('portals::portals.status_options');
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.edit', 'portals::admin.portals.edit'),
+            Config::get('portals::portals.admin.edit', 'portals::admin.portals.edit'),
             compact('portal', 'status_opt')
         );
     }

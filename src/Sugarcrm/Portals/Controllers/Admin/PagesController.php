@@ -11,13 +11,15 @@ use Illuminate\Support\MessageBag,
 class PagesController extends BaseController
 {
 
+    protected $portal;
     protected $page;
     protected $validator;
 
-    public function __construct(\Sugarcrm\Portals\Repo\Page $page)
+    public function __construct(\Sugarcrm\Portals\Repo\Portal $portal, \Sugarcrm\Portals\Repo\Page $page)
     {
-        $app = app();
-        $this->page = $page;
+        $app             = app();
+        $this->portal    = $portal;
+        $this->page      = $page;
         $this->validator = new PageValidator($app['validator'], new MessageBag);
 
         parent::__construct();
@@ -28,13 +30,13 @@ class PagesController extends BaseController
      *
      * @return Response
      */
-    public function index()
+    public function index($portal_id)
     {
-        $pages = $this->page->paginate(15);
+        $pages = $this->portal->find($portal_id)->pages()->paginate(15);
 
         $this->layout->content = View::make(
             Config::get('pages.admin.index', 'portals::admin.pages.index'),
-            compact('pages')
+            compact('pages', 'portal_id')
         );
     }
 
@@ -43,14 +45,13 @@ class PagesController extends BaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($portal_id)
     {
-        $status_opt = Config::get('portals.status_options');
-        $status_opt = array('draft' => 'draft', 'published' => 'published');
+        $status_opt = Config::get('portals::portals.status_options');
 
         $this->layout->content = View::make(
             Config::get('pages.admin.create', 'portals::admin.pages.create'),
-            compact('status_opt')
+            compact('status_opt', 'portal_id')
         );
     }
 
@@ -59,7 +60,7 @@ class PagesController extends BaseController
      *
      * @return Response
      */
-    public function store()
+    public function store($portal_id)
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         if (!$this->validator->with($input)->passes()) {
@@ -78,6 +79,7 @@ class PagesController extends BaseController
      * Display the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -89,13 +91,13 @@ class PagesController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit($portal_id, $id)
     {
-        $page = $this->page->find($id);
-        $status_opt = Config::get('portals.status_options');
-        $status_opt = array('draft' => 'draft', 'published' => 'published');
+        $page       = $this->page->find($id);
+        $status_opt = Config::get('portals::portals.status_options');
 
         $this->layout->content = View::make(
             Config::get('pages.admin.edit', 'portals::admin.pages.edit'),
@@ -107,9 +109,10 @@ class PagesController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update($portal_id, $id)
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         if (!$this->validator->with($input)->passes()) {
@@ -129,6 +132,7 @@ class PagesController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function destroy($id)

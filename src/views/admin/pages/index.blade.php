@@ -12,7 +12,7 @@ Content Pages - Admin -
 
 <div class="row">
     <div class="col-sm-9">
-        <h1>Content Pages <small class="pull-right"><a href="{{ route('admin.pages.create') }}" class="btn btn-sm btn-primary" title="Add New Page"><i class="fa fa-plus-square"></i> New</a></small></h1>
+        <h1>Content Pages <small class="pull-right"><a href="{{ route('admin.pages.create', array($portal_id)) }}" class="btn btn-sm btn-primary" title="Add New Page"><i class="fa fa-plus-square"></i> New</a></small></h1>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -28,7 +28,7 @@ Content Pages - Admin -
                         <td>{{ $page->title }}</td>
                         <td>{{ $page->slug }}</td>
                         <td>{{ $page->status }}</td>
-                        <td><a href="{{ route('admin.pages.edit', $page->id) }}">Edit</a></td>
+                        <td><a href="{{ route('admin.pages.edit', array($page->portal_id, $page->id)) }}">Edit</a></td>
                     </tr>
                 @endforeach
             </tbody>

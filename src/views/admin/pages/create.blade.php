@@ -1,6 +1,6 @@
 @section('crumb')
 <li><a href="/admin">Admin</a></li>
-<li><a href="{{ route('admin.pages.view') }}">Content Pages</a></li>
+<li><a href="{{ route('admin.pages.view', array($portal_id)) }}">Content Pages</a></li>
 <li class="active">Create Page</li>
 @stop
 
@@ -14,7 +14,7 @@ Create Page - Admin -
 
         <h1>Create Page</h1>
 
-        {{Former::vertical_open( route('admin.pages.store'), 'POST') }}
+        {{Former::vertical_open( route('admin.pages.store', array($portal_id)), 'POST') }}
 
 
         {{ Former::text('title','Title')->required() }}

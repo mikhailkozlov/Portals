@@ -52,40 +52,39 @@
 
         // Page routes
         \Route::get(
-            'pages',
+            'portals/{portal_id}/pages',
             array(
                 'as' => 'admin.pages.view',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@index'
             )
         );
         \Route::post(
-            'pages',
+            'portals/{portal_id}/pages',
             array(
                 'as' => 'admin.pages.store',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@store'
             )
         );
         \Route::get(
-            'pages/create',
+            'portals/{portal_id}/pages/create',
             array(
                 'as' => 'admin.pages.create',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@create'
             )
         );
         \Route::get(
-            'pages/{id}/edit',
+            'portals/{portal_id}/pages/{id}/edit',
             array(
                 'as' => 'admin.pages.edit',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@edit'
             )
         );
         \Route::put(
-            'pages/{id}/update',
+            'portals/{portal_id}/pages/{id}/update',
             array(
                 'as' => 'admin.pages.update',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@update'
             )
         );
-
     }
 );
