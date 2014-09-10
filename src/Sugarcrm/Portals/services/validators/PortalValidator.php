@@ -1,10 +1,10 @@
 <?php namespace Sugarcrm\Portals\Services\Validators;
 
-class PortalValidator extends Validator
+class PortalValidator extends AbstractValidator
 {
-    public static $rules = array(
-        'title' => 'required',
-        'slug' => 'required',
+    protected $rules = array(
+        'title'       => 'required',
+        'slug'        => 'required|unique:portals,slug',
         'description' => 'required',
     );
 }

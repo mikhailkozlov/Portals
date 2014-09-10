@@ -12,8 +12,7 @@ Content Portals - Admin -
 
 <div class="row">
     <div class="col-sm-9">
-        <h1>Content Portals</h1>
-        <div><a href="{{ route('admin.portals.create') }}">Create</a></div>
+        <h1>Content Portals <small class="pull-right"><a href="{{ route('admin.portals.create') }}" class="btn btn-sm btn-primary" title="Add New Portal"><i class="fa fa-plus-square"></i> New</a></small></h1>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -24,14 +23,14 @@ Content Portals - Admin -
             </tr>
             </thead>
             <tbody>
-            @foreach ($portals as $portal)
-            <tr>
-                <td>{{ $portal->title }}</td>
-                <td>{{ $portal->slug }}</td>
-                <td>{{ $portal->status }}</td>
-                <td><a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
-            </tr>
-            @endforeach
+                @foreach ($portals as $portal)
+                    <tr>
+                        <td>{{ $portal->title }}</td>
+                        <td>{{ $portal->slug }}</td>
+                        <td>{{ $portal->status }}</td>
+                        <td><a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 

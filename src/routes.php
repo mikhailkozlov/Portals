@@ -17,7 +17,15 @@
             'portals',
             array(
                 'as' => 'admin.portals.view',
-                'uses' => 'Admin\PortalsController@index'
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@index'
+            )
+        );
+
+        \Route::post(
+            'portals',
+            array(
+                'as' => 'admin.portals.store',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@store'
             )
         );
 
@@ -25,7 +33,7 @@
             'portals/create',
             array(
                 'as' => 'admin.portals.create',
-                'uses' => 'Admin\PortalsController@create'
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@create'
             )
         );
 
@@ -33,14 +41,14 @@
             'portals/{id}/edit',
             array(
                 'as' => 'admin.portals.edit',
-                'uses' => 'Admin\PortalsController@edit'
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@edit'
             )
         );
         \Route::put(
             'portals/{id}/update',
             array(
                 'as' => 'admin.portals.update',
-                'uses' => 'Admin\PortalsController@update'
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@update'
             )
         );
 

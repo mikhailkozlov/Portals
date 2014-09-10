@@ -1,8 +1,8 @@
-<?php
+<?php namespace Sugarcrm\Portals\Controllers;
 
 use Sugarcrm\Portals\Helpers\MenuHelper;
 
-class PortalsController extends \BaseController
+class PortalsController extends BaseController
 {
     protected $layout = 'layouts.master';
 

@@ -16,27 +16,19 @@
 
         {{Former::horizontal_open( route('admin.portals.update', array($portal->id)), 'PUT') }}
 
-        {{ Former::text('title','Title',Input::old('title'))
-        ->value($portal->title)
-        ->required() }}
+        {{ Former::populate($portal) }}
 
-        {{ Former::text('slug','Slug',Input::old('slug'))
-        ->value($portal->slug)
-        ->required() }}
+        {{ Former::text('title','Title')->required() }}
 
-        {{ Former::textarea('description','Description', \Input::old('description') )
-        ->value($portal->description)
-        ->required()
-        ->rows(5)->columns(20) }}
+        {{ Former::text('slug','Slug')->required() }}
 
-        {{ Former::select('status','Status')
-        ->options($portal->status_opt, $portal->status) }}
+        {{ Former::textarea('description','Description')->required()->rows(5)->columns(20) }}
 
-        {{ Former::textarea('keywords','Keywords', \Input::old('keywords') )
-        ->value($portal->keywords)
-        ->rows(5)->columns(20) }}
+        {{ Former::select('status','Status')->options($status_opt) }}
 
-        {{ Form::submit('Submit', array('class'=>'btn btn-primary')) }}
+        {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}
+
+        {{ Former::actions()->large_primary_submit('Save')->large_link_reset('Reset') }}
 
         {{Former::close()}}
 

@@ -1,7 +1,7 @@
-<?php
+<?php namespace Sugarcrm\Portals\Controllers;
 
 
-class FilesController extends \BaseController
+class FilesController extends BaseController
 {
     protected $layout = 'layouts.master';
 

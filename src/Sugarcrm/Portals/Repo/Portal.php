@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 class Portal extends Model
 {
 
+    protected $fillable = array('slug', 'title', 'keywords', 'description', 'status', 'user_id', 'page_id');
+
     public function frontPage()
     {
         return $this->hasOne('Sugarcrm\Portals\Repo\Page')->where('id', '=', $this->page_id);
