@@ -1,24 +1,24 @@
 <?php namespace Sugarcrm\Portals\Controllers\Admin;
 
 use Illuminate\Support\MessageBag,
-    Sugarcrm\Portals\Services\Validators\PortalValidator,
+    Sugarcrm\Portals\Services\Validators\PageValidator,
     Sugarcrm\Portals\Controllers\BaseController,
     View,
     Config,
     Input,
     Redirect;
 
-class PortalsController extends BaseController
+class PagesController extends BaseController
 {
 
-    protected $portal;
+    protected $page;
     protected $validator;
 
-    public function __construct(\Sugarcrm\Portals\Repo\Portal $portal)
+    public function __construct(\Sugarcrm\Portals\Repo\Page $page)
     {
-        $app             = app();
-        $this->portal    = $portal;
-        $this->validator = new PortalValidator($app['validator'], new MessageBag);
+        $app = app();
+        $this->page = $page;
+        $this->validator = new PageValidator($app['validator'], new MessageBag);
 
         parent::__construct();
     }
@@ -30,11 +30,11 @@ class PortalsController extends BaseController
      */
     public function index()
     {
-        $portals = $this->portal->paginate(15);
+        $pages = $this->page->paginate(15);
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.index', 'portals::admin.portals.index'),
-            compact('portals')
+            Config::get('pages.admin.index', 'portals::admin.pages.index'),
+            compact('pages')
         );
     }
 
@@ -46,9 +46,10 @@ class PortalsController extends BaseController
     public function create()
     {
         $status_opt = Config::get('portals.status_options');
+        $status_opt = array('draft' => 'draft', 'published' => 'published');
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.create', 'portals::admin.portals.create'),
+            Config::get('pages.admin.create', 'portals::admin.pages.create'),
             compact('status_opt')
         );
     }
@@ -60,16 +61,16 @@ class PortalsController extends BaseController
      */
     public function store()
     {
-        $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
+        $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
 
-        $portal = $this->portal->create($input);
+        $page = $this->page->create($input);
 
-        return Redirect::route('admin.portals.edit', array($portal->id))->with(
+        return Redirect::route('admin.pages.edit', array($page->id))->with(
             'success',
-            "Portal '{$input['title']}' has been saved"
+            "Page '{$input['title']}' has been saved"
         );
     }
 
@@ -77,7 +78,6 @@ class PortalsController extends BaseController
      * Display the specified resource.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function show($id)
@@ -89,17 +89,17 @@ class PortalsController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function edit($id)
     {
-        $portal     = $this->portal->find($id);
+        $page = $this->page->find($id);
         $status_opt = Config::get('portals.status_options');
+        $status_opt = array('draft' => 'draft', 'published' => 'published');
 
         $this->layout->content = View::make(
-            Config::get('portals.admin.edit', 'portals::admin.portals.edit'),
-            compact('portal', 'status_opt')
+            Config::get('pages.admin.edit', 'portals::admin.pages.edit'),
+            compact('page', 'status_opt')
         );
     }
 
@@ -107,21 +107,20 @@ class PortalsController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function update($id)
     {
-        $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
+        $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
-        $portal = $this->portal->find($id);
-        $portal->update($input);
+        $page = $this->page->find($id);
+        $page->update($input);
 
-        return Redirect::route('admin.portals.edit', array($id))->with(
+        return Redirect::route('admin.pages.edit', array($id))->with(
             'success',
-            "Portal '{$input['title']}' has been saved"
+            "Page '{$input['title']}' has been saved"
         );
 
     }
@@ -130,7 +129,6 @@ class PortalsController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function destroy($id)

@@ -14,7 +14,7 @@ Create Portal - Admin -
 
         <h1>Create Portal</h1>
 
-        {{Former::horizontal_open( route('admin.portals.store'), 'POST') }}
+        {{Former::vertical_open( route('admin.portals.store'), 'POST') }}
 
 
         {{ Former::text('title','Title')->required() }}

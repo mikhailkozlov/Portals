@@ -13,6 +13,7 @@
     array('prefix' => 'admin'),
     function () {
 
+        // Portals routes
         \Route::get(
             'portals',
             array(
@@ -20,7 +21,6 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@index'
             )
         );
-
         \Route::post(
             'portals',
             array(
@@ -28,7 +28,6 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@store'
             )
         );
-
         \Route::get(
             'portals/create',
             array(
@@ -36,7 +35,6 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@create'
             )
         );
-
         \Route::get(
             'portals/{id}/edit',
             array(
@@ -49,6 +47,43 @@
             array(
                 'as' => 'admin.portals.update',
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PortalsController@update'
+            )
+        );
+
+        // Page routes
+        \Route::get(
+            'pages',
+            array(
+                'as' => 'admin.pages.view',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@index'
+            )
+        );
+        \Route::post(
+            'pages',
+            array(
+                'as' => 'admin.pages.store',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@store'
+            )
+        );
+        \Route::get(
+            'pages/create',
+            array(
+                'as' => 'admin.pages.create',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@create'
+            )
+        );
+        \Route::get(
+            'pages/{id}/edit',
+            array(
+                'as' => 'admin.pages.edit',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@edit'
+            )
+        );
+        \Route::put(
+            'pages/{id}/update',
+            array(
+                'as' => 'admin.pages.update',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@update'
             )
         );
 

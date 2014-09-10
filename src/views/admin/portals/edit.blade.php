@@ -14,7 +14,7 @@
 
         <h1>{{{ $portal->title ? $portal->title : 'Create portal' }}}</h1>
 
-        {{Former::horizontal_open( route('admin.portals.update', array($portal->id)), 'PUT') }}
+        {{Former::vertical_open( route('admin.portals.update', array($portal->id)), 'PUT') }}
 
         {{ Former::populate($portal) }}
 
