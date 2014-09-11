@@ -1,6 +1,6 @@
 @section('crumb')
 <li><a href="/admin">Admin</a></li>
-<li><a href="{{ route('admin.portals.view') }}">Content Portals</a></li>
+<li><a href="{{ route('admin.portals.view') }}">Portal</a></li>
 <li class="active">Create Portal</li>
 @stop
 
@@ -38,4 +38,15 @@ Create Portal - Admin -
         <p>Basic portal settings.</p>
     </div>
 </div>
+@stop
+
+@section('javascript')
+{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        menubar: false,
+        toolbar_items_size: 'small'
+    });
+</script>
 @stop

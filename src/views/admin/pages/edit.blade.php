@@ -1,6 +1,7 @@
 @section('crumb')
 <li><a href="/admin">Admin</a></li>
-<li><a href="{{ route('admin.pages.view', array($page->portal_id)) }}">Content Pages</a></li>
+<li><a href="{{ route('admin.portals.view') }}">Portal</a></li>
+<li><a href="{{ route('admin.pages.view', array($page->portal_id)) }}">Pages</a></li>
 <li class="active">{{{ $page->title ? $page->title : 'Create page' }}}</li>
 @stop
 
@@ -38,4 +39,15 @@
         <p>Basic page settings.</p>
     </div>
 </div>
+@stop
+
+@section('javascript')
+{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        menubar: false,
+        toolbar_items_size: 'small'
+    });
+</script>
 @stop

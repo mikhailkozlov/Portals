@@ -1,5 +1,6 @@
 @section('crumb')
 <li><a href="/admin">Admin</a></li>
+<li><a href="{{ route('admin.portals.view') }}">Portal</a></li>
 <li class="active">Content Pages</li>
 @stop
 
