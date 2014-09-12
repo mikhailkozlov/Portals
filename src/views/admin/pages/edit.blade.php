@@ -17,7 +17,7 @@
 
         {{Former::vertical_open( route('admin.pages.update', array($page->portal_id, $page->id)), 'PUT') }}
 
-        {{ Former::populate($page) }}
+        {{ Former::populate($page->id) }}
 
         {{ Former::text('title','Title')->required() }}
 

@@ -6,6 +6,7 @@ use Illuminate\Support\MessageBag,
     View,
     Config,
     Input,
+    Str,
     Redirect;
 
 class PortalsController extends BaseController
@@ -61,6 +62,7 @@ class PortalsController extends BaseController
     public function store()
     {
         $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
+        $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
@@ -113,6 +115,7 @@ class PortalsController extends BaseController
     public function update($id)
     {
         $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
+        $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }

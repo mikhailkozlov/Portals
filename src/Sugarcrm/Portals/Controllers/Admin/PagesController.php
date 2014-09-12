@@ -6,6 +6,7 @@ use Illuminate\Support\MessageBag,
     View,
     Config,
     Input,
+    Str,
     Redirect;
 
 class PagesController extends BaseController
@@ -63,13 +64,14 @@ class PagesController extends BaseController
     public function store($portal_id)
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
+        $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
 
         $page = $this->page->create($input);
 
-        return Redirect::route('admin.pages.edit', array($page->id))->with(
+        return Redirect::route('admin.pages.edit', array($portal_id, $page->id))->with(
             'success',
             "Page '{$input['title']}' has been saved"
         );
@@ -115,17 +117,17 @@ class PagesController extends BaseController
     public function update($portal_id, $id)
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
+        $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
         $page = $this->page->find($id);
         $page->update($input);
 
-        return Redirect::route('admin.pages.edit', array($id))->with(
+        return Redirect::route('admin.pages.edit', array($portal_id, $id))->with(
             'success',
             "Page '{$input['title']}' has been saved"
         );
-
     }
 
     /**

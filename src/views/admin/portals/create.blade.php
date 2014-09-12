@@ -19,7 +19,7 @@ Create Portal - Admin -
 
         {{ Former::text('title','Title')->required() }}
 
-        {{ Former::text('slug','Slug') }}
+        {{ Former::text('slug','Slug')->required() }}
 
         {{ Former::textarea('description','Description')->required()->rows(5)->columns(20) }}
 
