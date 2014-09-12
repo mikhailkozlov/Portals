@@ -86,5 +86,14 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\PagesController@update'
             )
         );
+
+        // Files routes
+        \Route::get(
+            'files',
+            array(
+                'as' => 'admin.files.view',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@index'
+            )
+        );
     }
 );
