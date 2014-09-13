@@ -15,10 +15,10 @@ class FilesController extends BaseController
     protected $file;
     protected $validator;
 
-    public function __construct(\Sugarcrm\Portals\Repo\File $file)
+    public function __construct(\Sugarcrm\Portals\Repo\File $files)
     {
         $app = app();
-        $this->file = $file;
+        $this->files = $files;
         $this->validator = new FileValidator($app['validator'], new MessageBag);
 
         parent::__construct();
@@ -31,7 +31,14 @@ class FilesController extends BaseController
      */
     public function index()
     {
-        $files = $this->file->paginate(15);
+        $files = $this->files->paginate(15);
+
+        $filemanager = \App::make('flysystem');
+
+        $contents = $filemanager->listContents();
+        echo '<pre>'; // MK: delete me
+        print_r($contents);
+        echo '</pre>';
 
         $this->layout->content = View::make(
             Config::get('portals::files.admin.index', 'portals::admin.files.index'),
@@ -51,7 +58,7 @@ class FilesController extends BaseController
             return false;
         }
 
-        $file = $this->file->create($input);
+        $file = $this->files->create($input);
 
         return true;
     }
@@ -68,7 +75,7 @@ class FilesController extends BaseController
         if (!$this->validator->with($input)->passes()) {
             return false;
         }
-        $file = $this->file->find($id);
+        $file = $this->files->find($id);
         $file->update($input);
 
         return true;

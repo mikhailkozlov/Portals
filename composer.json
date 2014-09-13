@@ -21,11 +21,10 @@
         "illuminate/support": "4.1.*",
         "illuminate/routing": "4.1.*",
         "illuminate/validation": "4.1.*",
-        "aws/aws-sdk-php": "2.6.15"
+        "league/flysystem": "0.4.*"
     },
     "autoload": {
         "classmap": [
-            "src/controllers",
             "src/migrations",
             "src/seeds"
         ],
