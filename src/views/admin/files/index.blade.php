@@ -12,7 +12,7 @@ Files - Admin -
 
 <div class="row">
     <div class="col-sm-9">
-        <h1>Content Files</h1>
+        <h1>Content Files <small class="pull-right"><a href="{{ route('admin.files.create') }}" class="btn btn-sm btn-primary" title="Upload File"><i class="fa fa-plus-square"></i> New</a></small></h1>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -27,6 +27,7 @@ Files - Admin -
                         <td>{{ $file->title }}</td>
                         <td>{{ $file->filename }}</td>
                         <td>{{ $file->size }}</td>
+                        <td><a href="{{ route('admin.files.edit', $file->id) }}">Edit</a></td>
                     </tr>
                 @endforeach
             </tbody>

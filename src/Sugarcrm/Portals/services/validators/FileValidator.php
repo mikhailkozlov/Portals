@@ -3,7 +3,7 @@
 class FileValidator extends AbstractValidator
 {
     protected $rules = array(
-        'title'       => 'required',
+        'title' => 'required',
         'description' => 'required',
     );
 }

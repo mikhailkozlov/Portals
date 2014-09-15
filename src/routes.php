@@ -95,5 +95,33 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@index'
             )
         );
+        \Route::post(
+            'files',
+            array(
+                'as' => 'admin.files.store',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@store'
+            )
+        );
+        \Route::get(
+            'files/create',
+            array(
+                'as' => 'admin.files.create',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@create'
+            )
+        );
+        \Route::get(
+            'files/{id}/edit',
+            array(
+                'as' => 'admin.files.edit',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@edit'
+            )
+        );
+        \Route::put(
+            'files/{id}/update',
+            array(
+                'as' => 'admin.files.update',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@update'
+            )
+        );
     }
 );
