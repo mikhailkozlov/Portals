@@ -17,7 +17,7 @@
 
         {{Former::vertical_open( route('admin.pages.update', array($page->portal_id, $page->id)), 'PUT') }}
 
-        {{ Former::populate($page->id) }}
+        {{ Former::populate($page) }}
 
         {{ Former::text('title','Title')->required() }}
 
@@ -25,9 +25,10 @@
 
         {{ Former::select('status','Status')->options($status_opt) }}
 
-        {{ Former::textarea('content','Content')->required()->rows(5)->columns(20) }}
+        {{ Former::textarea('excerpt','Excerpt')->rows(5)->columns(20)->help('Excerpt will be used as introduction to an article') }}
 
-        {{ Former::textarea('excerpt','Excerpt')->rows(5)->columns(20) }}
+        {{ Former::textarea('content','Content')->required()->rows(15)->columns(20) }}
+
 
         {{ Former::actions()->large_primary_submit('Save')->large_link_reset('Reset') }}
 
@@ -42,12 +43,13 @@
 @stop
 
 @section('javascript')
-{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
+{{ HTML::script('/packages/sugarcrm/portals/tinymce/tinymce.min.js'); }}
 <script type="text/javascript">
     tinymce.init({
         selector: "textarea",
         menubar: false,
-        toolbar_items_size: 'small'
+        toolbar_items_size: 'small',
+        content_css:'assets/css/style.min.css'
     });
 </script>
 @stop

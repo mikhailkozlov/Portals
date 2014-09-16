@@ -42,7 +42,7 @@ Create Page - Admin -
 @stop
 
 @section('javascript')
-{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
+{{ HTML::script('/packages/sugarcrm/portals/tinymce/tinymce.min.js'); }}
 <script type="text/javascript">
     tinymce.init({
         selector: "textarea",
