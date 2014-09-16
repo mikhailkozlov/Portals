@@ -24,6 +24,7 @@ class PortalsServiceProvider extends ServiceProvider
         $this->package('sugarcrm/portals');
 
         include __DIR__ . '/../../routes.php';
+        include __DIR__ . '/../../helpers.php';
 
         /**
          * Register routes
