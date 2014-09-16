@@ -14,7 +14,6 @@ use Illuminate\Support\MessageBag,
 
 class FilesController extends BaseController
 {
-
     protected $auth;
     protected $file;
     protected $validator;
@@ -25,8 +24,18 @@ class FilesController extends BaseController
         $this->auth        = $auth;
         $this->file        = $file;
         $this->validator   = new FileValidator($app['validator'], new MessageBag);
-        $this->filemanager = App::make('flysystem');
+        //$this->filemanager = App::make('flysystem');
         parent::__construct();
+    }
+
+    protected function getUserGroups()
+    {
+        $userGroups = array();
+        $addGroups  = $this->auth->getGroupProvider()->findAll();
+        foreach ($addGroups as $item) {
+            $userGroups[$item->id] = $item->name;
+        }
+        return $userGroups;
     }
 
     /**
@@ -51,12 +60,11 @@ class FilesController extends BaseController
      */
     public function create()
     {
-        // @TODO add goups
-        //$allGroups = $this->auth->getGroupProvider()->findAll();
+        $userGroups = $this->getUserGroups();
 
         $this->layout->content = View::make(
             Config::get('portals::files.admin.create', 'portals::admin.files.create'),
-            compact('')
+            compact('userGroups')
         );
     }
 
@@ -67,30 +75,20 @@ class FilesController extends BaseController
      */
     public function store()
     {
-        $input      = Input::only('title', 'description', 'keywords');
+        $input      = Input::only('title', 'description', 'keywords', 'permissions');
         $input_file = Input::file('file');
 
         if (!$this->validator->with(Input::all())->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
-        // TODO - we probably need to move all that into File model and let it deal with it
-        // upload file
-        $stream = fopen($input_file->getPathname(), 'r+');
-        $this->filemanager->writeStream(
-            $input_file->getClientOriginalName(),
-            $stream,
-            array(
-                'visibility' => 'private',
-                'mimetype'   => $input_file->getMimeType(),
-            )
-        );
 
-        $input['filename']    = $input_file->getClientOriginalName();
-        $input['extension']   = $input_file->getClientOriginalExtension();
-        $input['type']        = $input_file->getMimeType();
-        $input['size']        = $input_file->getSize();
-        $input['user_id']     = 0; //@TODO  - add current user, I think $this->auth->getUser()->getId();
-        $input['permissions'] = 'admin'; // @TODO - we probably need to store Group ID here or create another column to do that.
+        $this->file->fmWriteStream($input_file);
+
+        $input['filename']  = $input_file->getClientOriginalName();
+        $input['extension'] = $input_file->getClientOriginalExtension();
+        $input['type']      = $input_file->getMimeType();
+        $input['size']      = $input_file->getSize();
+        //$input['user_id']   = $this->auth->getUser()->getId(); // TODO: does not see getId()
 
         $file = $this->file->create($input);
 
@@ -101,18 +99,17 @@ class FilesController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function edit($id)
     {
         $file = $this->file->find($id);
 
-        //@TODO - add ability to change group
+        $userGroups = $this->getUserGroups();
 
         $this->layout->content = View::make(
             Config::get('portals::files.admin.edit', 'portals::admin.files.edit'),
-            compact('file')
+            compact('file', 'userGroups')
         );
     }
 
@@ -120,7 +117,6 @@ class FilesController extends BaseController
      * Download file from Storage
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function download($id)
@@ -135,14 +131,7 @@ class FilesController extends BaseController
             return Redirect::route('admin.files.view')->with('error', $file->filename . ' not found on the hard drive');
         }
 
-        // TODO - we probably need to move all that into File model and let it deal with it
-        // Retrieve a read-stream
-        $tmpfname = tempnam("/tmp", $file->filename);
-        $stream   = $this->filemanager->readStream($file->filename);
-        $contents = stream_get_contents($stream);
-        $handle   = fopen($tmpfname, "w");
-        fwrite($handle, $contents);
-        fclose($handle);
+        $tmpfname = $this->file->fmReadStream($file);
 
         // save download
         $file->increment('downloads');
@@ -154,12 +143,11 @@ class FilesController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  int $id
-     *
      * @return Response
      */
     public function update($id)
     {
-        $input = Input::only('title', 'description', 'keywords');
+        $input = Input::only('title', 'description', 'keywords', 'permissions');
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }

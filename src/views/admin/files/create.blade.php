@@ -20,6 +20,8 @@ Upload File - Admin -
 
         {{ Former::file('file','File') }}
 
+        {{ Former::select('permissions','User group')->options($userGroups) }}
+
         {{ Former::textarea('description','Description')->rows(5)->columns(20) }}
 
         {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}

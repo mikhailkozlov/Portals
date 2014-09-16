@@ -20,6 +20,8 @@
 
         {{ Former::text('title','Title')->required() }}
 
+        {{ Former::select('permissions','User group')->options($userGroups) }}
+
         {{ Former::textarea('description','Description')->required()->rows(5)->columns(20) }}
 
         {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}
