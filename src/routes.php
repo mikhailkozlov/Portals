@@ -116,6 +116,13 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@edit'
             )
         );
+        \Route::get(
+            'files/{id}/download',
+            array(
+                'as' => 'admin.files.download',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@download'
+            )
+        );
         \Route::put(
             'files/{id}/update',
             array(

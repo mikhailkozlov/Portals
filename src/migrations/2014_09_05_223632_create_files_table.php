@@ -18,9 +18,10 @@ class CreateFilesTable extends Migration
             function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->integer('user_id');
+                $table->integer('downloads')->default(0);
                 $table->string('title', 250);
                 $table->text('description');
-                $table->text('permissions'); // we should be able to store multiple permissions
+                $table->text('permissions')->nullable(); // we should be able to store multiple permissions
                 $table->text('keywords');
                 $table->string('filename', 250);
                 $table->string('extension', 50);

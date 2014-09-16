@@ -46,7 +46,7 @@ class PortalsController extends BaseController
      */
     public function create()
     {
-        $status_opt = Config::get('portals::portals.status_options');
+        $status_opt = Config::get('portals::status_options');
 
         $this->layout->content = View::make(
             Config::get('portals::portals.admin.create', 'portals::admin.portals.create'),
@@ -97,7 +97,7 @@ class PortalsController extends BaseController
     public function edit($id)
     {
         $portal     = $this->portal->find($id);
-        $status_opt = Config::get('portals::portals.status_options');
+        $status_opt = Config::get('portals::status_options');
 
         $this->layout->content = View::make(
             Config::get('portals::portals.admin.edit', 'portals::admin.portals.edit'),
