@@ -21,9 +21,9 @@ class File extends Model
         'user_id'
     );
 
-    public function groups()
+    public function users_groups()
     {
-        return $this->hasMany('Sugarcrm\Portals\Repo\Group');
+        return $this->belongsToMany('Cartalyst\Sentry\Groups\Eloquent\Group', 'users_groups');
     }
 
     public function __construct(array $attributes = array())
