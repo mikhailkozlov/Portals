@@ -20,10 +20,10 @@ class FilesController extends BaseController
 
     public function __construct(\Sugarcrm\Portals\Repo\File $file, \Cartalyst\Sentry\Sentry $auth)
     {
-        $app               = app();
-        $this->auth        = $auth;
-        $this->file        = $file;
-        $this->validator   = new FileValidator($app['validator'], new MessageBag);
+        $app             = app();
+        $this->auth      = $auth;
+        $this->file      = $file;
+        $this->validator = new FileValidator($app['validator'], new MessageBag);
         //$this->filemanager = App::make('flysystem');
         parent::__construct();
     }
@@ -75,14 +75,20 @@ class FilesController extends BaseController
      */
     public function store()
     {
-        $input      = Input::only('title', 'description', 'keywords', 'permissions');
+        $input      = Input::all(); // have get all to get file
         $input_file = Input::file('file');
 
-        if (!$this->validator->with(Input::all())->passes()) {
-            return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
+        if (!Input::has('title') && $input_file->isValid()) {
+            $input['title'] = $input_file->getClientOriginalName();
         }
 
-        $this->file->fmWriteStream($input_file);
+        if (empty($input['title']) && $input_file->isValid()) {
+            $input['title'] = $input_file->getClientOriginalName();
+        }
+
+        if (!$this->validator->with($input)->passes()) {
+            return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
+        }
 
         $input['filename']  = $input_file->getClientOriginalName();
         $input['extension'] = $input_file->getClientOriginalExtension();
@@ -92,6 +98,8 @@ class FilesController extends BaseController
 
         $file = $this->file->create($input);
 
+        $file->fmWriteStream($input_file);
+
         return Redirect::route('admin.files.edit', array($file->id));
     }
 
@@ -99,6 +107,7 @@ class FilesController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -117,6 +126,7 @@ class FilesController extends BaseController
      * Download file from Storage
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function download($id)
@@ -125,10 +135,6 @@ class FilesController extends BaseController
 
         if (is_null($file)) {
             return Redirect::route('admin.files.view')->with('error', 'File not found.');
-        }
-
-        if (!$this->filemanager->has($file->filename)) {
-            return Redirect::route('admin.files.view')->with('error', $file->filename . ' not found on the hard drive');
         }
 
         $tmpfname = $this->file->fmReadStream($file);
@@ -143,14 +149,17 @@ class FilesController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function update($id)
     {
         $input = Input::only('title', 'description', 'keywords', 'permissions');
+
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
+
         $file = $this->file->find($id);
         $file->update($input);
 
@@ -159,5 +168,4 @@ class FilesController extends BaseController
             "File information '{$input['title']}' has been saved"
         );
     }
-
 }

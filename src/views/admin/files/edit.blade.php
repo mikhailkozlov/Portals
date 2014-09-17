@@ -18,13 +18,11 @@
 
         {{ Former::populate($file) }}
 
-        {{ Former::text('title','Title')->required() }}
-
         {{ Former::select('permissions','User group')->options($userGroups) }}
 
-        {{ Former::textarea('description','Description')->required()->rows(5)->columns(20) }}
+        {{ Former::textarea('description','Description')->rows(5)->columns(20) }}
 
-        {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}
+        {{ Former::textarea('keywords','Keywords')->rows(2)->columns(20) }}
 
         {{ Former::actions()->large_primary_submit('Save')->large_link_reset('Reset') }}
 
@@ -37,15 +35,4 @@
         <p>Basic file settings.</p>
     </div>
 </div>
-@stop
-
-@section('javascript')
-{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
-<script type="text/javascript">
-    tinymce.init({
-        selector: "textarea",
-        menubar: false,
-        toolbar_items_size: 'small'
-    });
-</script>
 @stop

@@ -16,17 +16,17 @@ Upload File - Admin -
 
         {{Former::vertical_open(route('admin.files.store'), 'POST', array('enctype'=>'multipart/form-data')) }}
 
-        {{ Former::text('title','Title') }}
+        {{ Former::file('file','File')->required() }}
 
-        {{ Former::file('file','File') }}
+        {{ Former::text('title','Label') }}
 
-        {{ Former::select('permissions','User group')->options($userGroups) }}
+        {{ Former::select('permissions','Access')->options($userGroups) }}
 
         {{ Former::textarea('description','Description')->rows(5)->columns(20) }}
 
-        {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}
+        {{ Former::textarea('keywords','Keywords')->rows(2)->columns(20) }}
 
-        {{ Former::actions()->large_primary_submit('Upload')->link_reset('Reset') }}
+        {{ Former::actions()->large_primary_submit('Save')->large_link_reset('Reset') }}
 
         {{Former::close()}}
 
@@ -36,15 +36,4 @@ Upload File - Admin -
         <p>Basic portal settings.</p>
     </div>
 </div>
-@stop
-
-@section('javascript')
-{{ HTML::script('assets/js/tinymce/tinymce.min.js'); }}
-<script type="text/javascript">
-    tinymce.init({
-        selector: "textarea",
-        menubar: false,
-        toolbar_items_size: 'small'
-    });
-</script>
 @stop

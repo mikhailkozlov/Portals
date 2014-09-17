@@ -5,18 +5,32 @@ use Illuminate\Database\Eloquent\Model,
 
 class File extends Model
 {
-    protected $fillable = array('user_id', 'title', 'description', 'keywords', 'filename', 'extension', 'type', 'size', 'permissions', 'user_id');
+
+    protected $filemanager;
+
+    protected $fillable = array(
+        'user_id',
+        'title',
+        'description',
+        'keywords',
+        'filename',
+        'extension',
+        'type',
+        'size',
+        'permissions',
+        'user_id'
+    );
 
     public function groups()
     {
         return $this->hasMany('Sugarcrm\Portals\Repo\Group');
     }
 
-    public function __construct()
+    public function __construct(array $attributes = array())
     {
-        $this->filemanager = App::make('flysystem');
+        parent::__construct($attributes);
 
-        parent::__construct();
+        $this->filemanager = App::make('flysystem');
     }
 
     public function fmWriteStream($input_file)

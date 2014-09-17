@@ -4,6 +4,6 @@ class FileValidator extends AbstractValidator
 {
     protected $rules = array(
         'title' => 'required',
-       // 'file'  => 'required|max:10000',
+        'file'  => 'required|max:10000',
     );
 }
