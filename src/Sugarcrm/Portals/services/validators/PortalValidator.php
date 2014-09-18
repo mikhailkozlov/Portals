@@ -7,4 +7,11 @@ class PortalValidator extends AbstractValidator
         'slug'        => 'required|unique:portals,slug',
         'description' => 'required',
     );
+
+    public function forUpdate($id)
+    {
+        $this->rules['slug'] = 'required|unique:portals,slug,' . $id;
+        return $this->passes();
+    }
+
 }

@@ -16,19 +16,19 @@ Content Portals - Admin -
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Portal Name</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th class="col-sm-5">Portal Name</th>
+                <th class="col-sm-2">Path</th>
+                <th class="col-sm-2">Status</th>
+                <th class="col-sm-3">Actions</th>
             </tr>
             </thead>
             <tbody>
                 @foreach ($portals as $portal)
                     <tr>
                         <td>{{ $portal->title }}</td>
-                        <td>{{ $portal->slug }}</td>
+                        <td><a href="{{ url($portal->slug) }}">{{ $portal->slug }}</a></td>
                         <td>{{ $portal->status }}</td>
-                        <td><a href="{{ route('admin.pages.view', $portal->id) }}">Pages</a> | <a href="{{ route('admin.portals.edit', $portal->id) }}">Edit</a></td>
+                        <td><a href="{{ route('admin.pages.view', $portal->id) }}">Pages</a> | <a href="{{ route('admin.portals.edit', $portal->id) }}">Settings</a></td>
                     </tr>
                 @endforeach
             </tbody>

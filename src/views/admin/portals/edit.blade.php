@@ -20,13 +20,15 @@
 
         {{ Former::text('title','Title')->required() }}
 
-        {{ Former::text('slug','Slug')->required() }}
+        {{ Former::text('slug','Path')->required()->help('Root path to the portal. Use can nest path into folder like <code>path/to/portal</code>.') }}
 
         {{ Former::textarea('description','Description')->required()->rows(5)->columns(20) }}
 
+        {{ Former::select('page_id','Home Page')->options($pages)->help('Select Blog if you would like home page to show latest posts/pages. Select particular page to make it portal\'s home page.') }}
+
         {{ Former::select('status','Status')->options($status_opt) }}
 
-        {{ Former::textarea('keywords','Keywords')->rows(5)->columns(20) }}
+        {{ Former::text('keywords','Keywords') }}
 
         {{ Former::actions()->large_primary_submit('Save')->large_link_reset('Reset') }}
 

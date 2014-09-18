@@ -62,7 +62,7 @@ class PortalsController extends BaseController
     public function store()
     {
         $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
-        $input['slug'] = Str::slug($input['slug']);
+
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
@@ -96,12 +96,15 @@ class PortalsController extends BaseController
      */
     public function edit($id)
     {
-        $portal     = $this->portal->find($id);
+        $portal   = $this->portal->find($id);
+        $pages    = $portal->pages->lists('title', 'id');
+        $pages[0] = '-- Blog --';
+        ksort($pages);
         $status_opt = Config::get('portals::status_options');
 
         $this->layout->content = View::make(
             Config::get('portals::portals.admin.edit', 'portals::admin.portals.edit'),
-            compact('portal', 'status_opt')
+            compact('portal', 'pages', 'status_opt')
         );
     }
 
@@ -114,13 +117,20 @@ class PortalsController extends BaseController
      */
     public function update($id)
     {
-        $input = Input::only('slug', 'title', 'keywords', 'description', 'status');
-        $input['slug'] = Str::slug($input['slug']);
-        if (!$this->validator->with($input)->passes()) {
+        $input = Input::only('slug', 'title', 'keywords', 'description', 'status', 'page_id');
+
+        if (!$this->validator->with($input)->forUpdate($id)) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
+
         $portal = $this->portal->find($id);
+
         $portal->update($input);
+
+        if ($input['page_id'] > 0) {
+            $page = $portal->pages()->find($input['page_id']);
+            $portal->frontPage()->save($page);
+        }
 
         return Redirect::route('admin.portals.edit', array($id))->with(
             'success',

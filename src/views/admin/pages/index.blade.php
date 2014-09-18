@@ -16,12 +16,12 @@ Content Pages - Admin -
         <h1>Content Pages <small class="pull-right"><a href="{{ route('admin.pages.create', array($portal_id)) }}" class="btn btn-sm btn-primary" title="Add New Page"><i class="fa fa-plus-square"></i> New</a></small></h1>
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Page Name</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th class="col-sm-5">Page Name</th>
+                    <th class="col-sm-2">Path</th>
+                    <th class="col-sm-2">Status</th>
+                    <th class="col-sm-3">Actions</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach ($pages as $page)

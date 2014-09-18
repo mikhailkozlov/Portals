@@ -17,17 +17,15 @@ Create Page - Admin -
 
         {{Former::vertical_open( route('admin.pages.store', array($portal_id)), 'POST') }}
 
-
         {{ Former::text('title','Title')->required() }}
 
         {{ Former::text('slug','Slug')->required() }}
 
         {{ Former::select('status','Status')->options($status_opt) }}
 
-        {{ Former::textarea('content','Content')->required()->rows(5)->columns(20) }}
-
         {{ Former::textarea('excerpt','Excerpt')->rows(5)->columns(20) }}
 
+        {{ Former::textarea('content','Content')->rows(5)->columns(40) }}
 
         {{ Former::actions()->large_primary_submit('Save')->link_reset('Reset') }}
 

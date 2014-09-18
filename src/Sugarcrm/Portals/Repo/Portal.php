@@ -1,15 +1,17 @@
 <?php namespace Sugarcrm\Portals\Repo;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    Illuminate\Support\Str;
 
 class Portal extends Model
 {
 
     protected $fillable = array('slug', 'title', 'keywords', 'description', 'status', 'user_id', 'page_id');
 
+    // alias for page
     public function frontPage()
     {
-        return $this->hasOne('Sugarcrm\Portals\Repo\Page')->where('id', '=', $this->page_id);
+        return $this->hasOne('Sugarcrm\Portals\Repo\Page');
     }
 
     public function pages()
@@ -17,4 +19,13 @@ class Portal extends Model
         return $this->hasMany('Sugarcrm\Portals\Repo\Page');
     }
 
+    public function setSlugAttribute($value)
+    {
+        $slugs = explode('/', trim($value, '/'));
+        foreach ($slugs as $i => $s) {
+            $slugs[$i] = Str::slug($s);
+        }
+        $this->attributes['slug'] = implode('/', $slugs);
+
+    }
 }

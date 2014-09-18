@@ -65,11 +65,14 @@ class PagesController extends BaseController
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         $input['slug'] = Str::slug($input['slug']);
+        $input['user_id'] = $this->user->id;
+
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
+        $portal = $this->portal->find($portal_id);
 
-        $page = $this->page->create($input);
+        $page = $portal->pages()->create($input);
 
         return Redirect::route('admin.pages.edit', array($portal_id, $page->id))->with(
             'success',
@@ -118,7 +121,7 @@ class PagesController extends BaseController
     {
         $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         $input['slug'] = Str::slug($input['slug']);
-        if (!$this->validator->with($input)->passes()) {
+        if (!$this->validator->with($input)->forUpdate($id)) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
         $page = $this->page->find($id);

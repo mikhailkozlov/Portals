@@ -13,6 +13,9 @@ Composer
 Run Migration
 
     php artisan migrate --bench="sugarcrm/portals"
+
+    php artisan asset:publish --bench="sugarcrm/portals"
+
     
 Seed Demo Portal
 

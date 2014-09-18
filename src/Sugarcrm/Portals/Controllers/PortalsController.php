@@ -29,19 +29,30 @@ class PortalsController extends BaseController
             return \App::abort('404');
         }
         $menu = array();
-        if($portal->page_id > 0){
+        if($portal->page_id > 0) {
             $portal->frontPage;
-            if(!is_null($portal->frontPage)){
+            if (!is_null($portal->frontPage)) {
                 $portal->title = $portal->frontPage->title;
             }
+
+            $this->layout->content = \View::make(
+                \Config::get('portals::portals.views.index', 'portals::index'),
+                array(
+                    'portal'     => $portal,
+                    'page'       => $portal->frontPage,
+                    'portalMenu' => $menu,
+                )
+            );
+        }else{
+
+            $this->layout->content = \View::make(
+                \Config::get('portals::portals.views.blog', 'portals::index_blog'),
+                array(
+                    'portal'     => $portal,
+                    'pages'      => $portal->pages,
+                    'portalMenu' => $menu,
+                )
+            );
         }
-        $this->layout->content = \View::make(
-            \Config::get('portals::portals.views.index', 'portals::index'),
-            array(
-                'portal'     => $portal,
-                'page'       => $portal->frontPage,
-                'portalMenu' => $menu,
-            )
-        );
     }
 }
