@@ -18,7 +18,7 @@ class File extends Model
         'type',
         'size',
         'permissions',
-        'user_id'
+        'group_id'
     );
 
     public function group()

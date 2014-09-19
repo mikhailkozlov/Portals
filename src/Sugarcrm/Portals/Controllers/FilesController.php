@@ -1,5 +1,7 @@
 <?php namespace Sugarcrm\Portals\Controllers;
 
+use App,
+    Response;
 
 class FilesController extends BaseController
 {
@@ -14,14 +16,14 @@ class FilesController extends BaseController
         parent::__construct();
     }
 
-    public function get($id)
+    public function get($id, $name)
     {
         $file = $this->file->find($id);
 
         if (is_null($file)) {
-            return Redirect::route('portals.files.download')->with('error', 'File not found.');
+            return App::abort(404)->with('error', 'File not found.');
         } elseif (!$this->user->inGroup($file->group)) {
-            return Redirect::route('portals.files.download')->with('error', 'You have no access for this file.');
+            return App::abort(403)->with('error', 'You have no access for this file.');
         }
 
         $tmpfname = $this->file->fmReadStream($file);

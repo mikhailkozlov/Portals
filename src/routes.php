@@ -2,9 +2,9 @@
 
 // try to resolve file download
 \Route::get(
-    'files/{id}',
-    array('as' => 'portals.files.download', 'uses' => 'FilesController@get')
-);
+    'files/{id}/{name?}',
+    array('as' => 'portals.files.download', 'uses' => 'Sugarcrm\Portals\Controllers\FilesController@get')
+)->where(array('id' => '[0-9]+'));
 
 /********************************
  * Admin system

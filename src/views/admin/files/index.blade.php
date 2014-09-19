@@ -28,7 +28,7 @@ Files - Admin -
                         <td>{{ $file->title }}</td>
                         <td>{{ $file->filename }}</td>
                         <td  style="text-align: right;">{{ fileSizeReadable($file->size) }}</td>
-                        <td><a href="{{ route('admin.files.edit', $file->id) }}">Edit</a> | <a href="{{ route('admin.files.download', $file->id) }}">Download</a></td>
+                        <td><a href="{{ route('admin.files.edit', $file->id) }}">Edit</a> | <a href="{{ route('portals.files.download', array($file->id, $file->title)) }}">Download</a></td>
                     </tr>
                 @endforeach
             </tbody>
