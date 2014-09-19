@@ -14,9 +14,22 @@ class FilesController extends BaseController
         parent::__construct();
     }
 
-    public function get($file)
+    public function get($id)
     {
-        return 'Downloading file';
+        $file = $this->file->find($id);
+
+        if (is_null($file)) {
+            return Redirect::route('portals.files.download')->with('error', 'File not found.');
+        } elseif (!$this->user->inGroup($file->group)) {
+            return Redirect::route('portals.files.download')->with('error', 'You have no access for this file.');
+        }
+
+        $tmpfname = $this->file->fmReadStream($file);
+
+        // save download
+        $file->increment('downloads');
+
+        return Response::download($tmpfname, $file->filename);
     }
 
 }

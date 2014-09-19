@@ -20,7 +20,7 @@ Upload File - Admin -
 
         {{ Former::text('title','Label') }}
 
-        {{ Former::select('permissions','Access')->options($userGroups) }}
+        {{ Former::select('group_id','Access')->options($userGroups) }}
 
         {{ Former::textarea('description','Description')->rows(5)->columns(20) }}
 

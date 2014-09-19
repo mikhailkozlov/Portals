@@ -7,16 +7,16 @@ use Illuminate\Routing\Controller,
 
 class BaseController extends Controller
 {
-    public $user = null;
-
+    protected $user = null;
+    protected $auth;
     protected $layout = 'portals::layouts.master';
 
     public function __construct()
     {
-        $sentry = App::make('sentry');
+        $this->auth = App::make('sentry');
         // probably a good place to get user and some other data we need
-        if ($sentry->check()) {
-            $this->user = $sentry->getUser();
+        if ($this->auth->check()) {
+            $this->user = $this->auth->getUser();
         }
     }
 
@@ -38,5 +38,10 @@ class BaseController extends Controller
 
         //share the config option to all the views
         View::share('portals', Config::get('cpanel::site_config'));
+    }
+
+    protected function userGroupsList()
+    {
+        return $this->auth->getGroupProvider()->createModel()->lists('name', 'id');
     }
 }

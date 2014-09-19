@@ -2,7 +2,7 @@
 
 // try to resolve file download
 \Route::get(
-    'files/{file}',
+    'files/{id}',
     array('as' => 'portals.files.download', 'uses' => 'FilesController@get')
 );
 
@@ -10,7 +10,7 @@
  * Admin system
  ********************************/
 \Route::group(
-    array('prefix' => 'admin'),
+    array('prefix' => 'admin', 'before' => 'auth.admin'),
     function () {
 
         // Portals routes

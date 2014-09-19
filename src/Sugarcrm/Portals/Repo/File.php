@@ -21,9 +21,9 @@ class File extends Model
         'user_id'
     );
 
-    public function users_groups()
+    public function group()
     {
-        return $this->belongsToMany('Cartalyst\Sentry\Groups\Eloquent\Group', 'users_groups');
+        return $this->belongsTo('Cartalyst\Sentry\Groups\Eloquent\Group');
     }
 
     public function __construct(array $attributes = array())

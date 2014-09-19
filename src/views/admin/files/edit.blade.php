@@ -18,7 +18,7 @@
 
         {{ Former::populate($file) }}
 
-        {{ Former::select('permissions','User group')->options($userGroups) }}
+        {{ Former::select('group_id','User group')->options($userGroups) }}
 
         {{ Former::textarea('description','Description')->rows(5)->columns(20) }}
 

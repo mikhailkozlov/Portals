@@ -22,6 +22,7 @@ class CreateFilesTable extends Migration
                 $table->string('title', 250);
                 $table->text('description');
                 $table->text('permissions')->nullable(); // we should be able to store multiple permissions
+                $table->integer('group_id');
                 $table->text('keywords');
                 $table->string('filename', 250);
                 $table->string('extension', 50);

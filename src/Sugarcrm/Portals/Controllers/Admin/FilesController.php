@@ -14,30 +14,15 @@ use Illuminate\Support\MessageBag,
 
 class FilesController extends BaseController
 {
-    protected $auth;
-    public $user;
     protected $file;
     protected $validator;
 
-    public function __construct(\Sugarcrm\Portals\Repo\File $file, \Cartalyst\Sentry\Sentry $auth)
+    public function __construct(\Sugarcrm\Portals\Repo\File $file)
     {
-        $app = app();
-        //$this->auth      = $auth;
-        $this->auth      = App::make('sentry'); // TODO: allow to see Sentry
-        $this->user      = $this->auth->getUser();
+        $app             = app();
         $this->file      = $file;
         $this->validator = new FileValidator($app['validator'], new MessageBag);
         parent::__construct();
-    }
-
-    protected function userGroupsList()
-    {
-        $userGroups = array();
-        $addGroups  = $this->auth->getGroupProvider()->findAll();
-        foreach ($addGroups as $item) {
-            $userGroups[$item->id] = $item->name;
-        }
-        return $userGroups;
     }
 
     /**
@@ -130,7 +115,7 @@ class FilesController extends BaseController
      */
     public function update($id)
     {
-        $input = Input::only('title', 'description', 'keywords', 'permissions');
+        $input = Input::only('title', 'description', 'keywords', 'group_id');
 
         if (!$this->validator->with($input)->passes()) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
@@ -157,14 +142,12 @@ class FilesController extends BaseController
 
         if (is_null($file)) {
             return Redirect::route('admin.files.view')->with('error', 'File not found.');
-        } elseif (!$this->user->inGroup($this->auth->findGroupById($file->permissions))) {
-            return Redirect::route('admin.files.view')->with('error', 'You have no access for this file.');
         }
 
         $tmpfname = $this->file->fmReadStream($file);
 
         // save download
-        $file->increment('downloads'); // TODO:  ALTER TABLE `files` ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `size`;
+        $file->increment('downloads');
 
         return Response::download($tmpfname, $file->filename);
     }
