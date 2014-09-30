@@ -1,5 +1,6 @@
 <?php namespace Sugarcrm\Portals\Controllers\Admin;
 
+use Doctrine\Common\Annotations\Annotation\Attribute;
 use Illuminate\Support\MessageBag,
     Sugarcrm\Portals\Services\Validators\PageValidator,
     Sugarcrm\Portals\Controllers\BaseController,
@@ -13,14 +14,19 @@ class PagesController extends BaseController
 {
 
     protected $portal;
+    protected $attribute;
     protected $page;
     protected $validator;
 
-    public function __construct(\Sugarcrm\Portals\Repo\Portal $portal, \Sugarcrm\Portals\Repo\Page $page)
-    {
+    public function __construct(
+        \Sugarcrm\Portals\Repo\Portal $portal,
+        \Sugarcrm\Portals\Repo\Page $page,
+        \Sugarcrm\Portals\Repo\Attribute $attributes
+    ) {
         $app             = app();
         $this->portal    = $portal;
         $this->page      = $page;
+        $this->attribute = $attributes;
         $this->validator = new PageValidator($app['validator'], new MessageBag);
 
         parent::__construct();
@@ -49,10 +55,12 @@ class PagesController extends BaseController
     public function create($portal_id)
     {
         $status_opt = Config::get('portals::status_options');
+        $types      = Config::get('portals::pages.types');
+        $parents    = $this->page->where('type', '=', Config::get('portals::pages.default'))->lists('title', 'id');
 
         $this->layout->content = View::make(
             Config::get('portals::pages.admin.create', 'portals::admin.pages.create'),
-            compact('status_opt', 'portal_id')
+            compact('status_opt', 'portal_id', 'types', 'parents')
         );
     }
 
@@ -63,8 +71,11 @@ class PagesController extends BaseController
      */
     public function store($portal_id)
     {
-        $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
+        $input         = Input::only('slug', 'title', 'content', 'excerpt', 'status');
         $input['slug'] = Str::slug($input['slug']);
+        if (empty($input['slug'])) {
+            $input['slug'] = Str::slug($input['title']);
+        }
         $input['user_id'] = $this->user->id;
 
         if (!$this->validator->with($input)->passes()) {
@@ -103,10 +114,14 @@ class PagesController extends BaseController
     {
         $page       = $this->page->find($id);
         $status_opt = Config::get('portals::status_options', array());
+        $attributes = Config::get('portals::pages.attributes.' . $page->type, array());
+
+        $types   = Config::get('portals::pages.types');
+        $parents = $this->page->where('type', '=', Config::get('portals::pages.default'))->lists('title', 'id');
 
         $this->layout->content = View::make(
             Config::get('portals::pages.admin.edit', 'portals::admin.pages.edit'),
-            compact('page', 'status_opt')
+            compact('page', 'portal_id', 'types', 'parents', 'status_opt', 'attributes')
         );
     }
 
@@ -119,13 +134,29 @@ class PagesController extends BaseController
      */
     public function update($portal_id, $id)
     {
-        $input = Input::only('slug', 'title', 'content', 'excerpt', 'status');
+        $input         = Input::only('slug', 'title', 'content', 'excerpt', 'status', 'type', 'parent_id', 'attributes');
         $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->forUpdate($id)) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
         $page = $this->page->find($id);
+
         $page->update($input);
+
+        if (Input::has('attributes')) {
+            // remove all
+            $page->attributes()->delete();
+            foreach ($input['attributes'] as $key => $val) {
+                $page->attributes()->create(
+                    array(
+                        'title' => $key,
+                        'value' => $val
+                    )
+                );
+            }
+        }
+
+        // $page->attributes()->create();
 
         return Redirect::route('admin.pages.edit', array($portal_id, $id))->with(
             'success',

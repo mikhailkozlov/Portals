@@ -16,18 +16,22 @@ Create Page - Admin -
         <h1>Create Page</h1>
 
         {{Former::vertical_open( route('admin.pages.store', array($portal_id)), 'POST') }}
+            {{ Former::hidden('status')->value('draft') }}
 
-        {{ Former::text('title','Title')->required() }}
+            {{ Former::text('title','Title')->required() }}
 
-        {{ Former::text('slug','Slug')->required() }}
+            {{ Former::textarea('content','Content')->rows(5)->columns(40) }}
 
-        {{ Former::select('status','Status')->options($status_opt) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ Former::text('slug','Page Url')->help('Please only provide desired page URL not full path. If no URL provided, it will be generated from title.') }}
+                </div>
+                <div class="col-sm-6">
+                    {{ Former::select('type','Page Type')->options($types)->required()->help('By default pages of type Blog will be displayed on front page of the portal. Pages are regular html pages and will be organized in a tree.')  }}
+                </div>
+            </div>
 
-        {{ Former::textarea('excerpt','Excerpt')->rows(5)->columns(20) }}
-
-        {{ Former::textarea('content','Content')->rows(5)->columns(40) }}
-
-        {{ Former::actions()->large_primary_submit('Save')->link_reset('Reset') }}
+            {{ Former::actions()->large_primary_submit('Save')->link_reset('Reset') }}
 
         {{Former::close()}}
 
@@ -45,7 +49,14 @@ Create Page - Admin -
     tinymce.init({
         selector: "textarea",
         menubar: false,
-        toolbar_items_size: 'small'
+        paste_as_text: true,
+        plugins: [
+                "advlist autolink lists link image anchor",
+                "code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
+        content_css:'/packages/sugarcrm/portals/bootstrap/css/bootstrap.min.css'
     });
 </script>
 @stop

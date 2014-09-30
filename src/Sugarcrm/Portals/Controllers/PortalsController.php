@@ -34,7 +34,6 @@ class PortalsController extends BaseController
             if (!is_null($portal->frontPage)) {
                 $portal->title = $portal->frontPage->title;
             }
-
             $this->layout->content = \View::make(
                 \Config::get('portals::portals.views.index', 'portals::index'),
                 array(
@@ -44,12 +43,11 @@ class PortalsController extends BaseController
                 )
             );
         }else{
-
             $this->layout->content = \View::make(
                 \Config::get('portals::portals.views.blog', 'portals::index_blog'),
                 array(
                     'portal'     => $portal,
-                    'pages'      => $portal->pages,
+                    'pages'      => $portal->pages()->whereType('blog')->whereStatus('published')->paginate(10),
                     'portalMenu' => $menu,
                 )
             );

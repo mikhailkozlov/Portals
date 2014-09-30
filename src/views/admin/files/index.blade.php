@@ -25,10 +25,10 @@ Files - Admin -
             <tbody>
                 @foreach ($files as $file)
                     <tr>
-                        <td>{{ $file->title }}</td>
-                        <td>{{ $file->filename }}</td>
+                        <td><a href="{{ route('admin.files.edit', $file->id) }}" title="Edit">{{ $file->title }}</a></td>
+                        <td><a href="{{ route('portals.files.download', array($file->id, $file->title)) }}" title="Download">{{ $file->filename }}</a></td>
                         <td  style="text-align: right;">{{ fileSizeReadable($file->size) }}</td>
-                        <td><a href="{{ route('admin.files.edit', $file->id) }}">Edit</a> | <a href="{{ route('portals.files.download', array($file->id, $file->title)) }}">Download</a></td>
+                        <td><a href="{{ route('admin.files.edit', $file->id) }}"><i class="fa fa-pencil hidden-md hidden-lg"></i><span class="hidden-xs hidden-sm"> Edit</span></a> <span class="hidden-xs hidden-sm">|</span> <a href="{{ route('portals.files.download', array($file->id, $file->title)) }}"><i class="fa fa-download  hidden-md hidden-lg"></i><span class="hidden-xs hidden-sm">  Download</span></a></td>
                     </tr>
                 @endforeach
             </tbody>

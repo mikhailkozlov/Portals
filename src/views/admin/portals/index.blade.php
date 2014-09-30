@@ -28,7 +28,11 @@ Content Portals - Admin -
                         <td>{{ $portal->title }}</td>
                         <td><a href="{{ url($portal->slug) }}">{{ $portal->slug }}</a></td>
                         <td>{{ $portal->status }}</td>
-                        <td><a href="{{ route('admin.pages.view', $portal->id) }}">Pages</a> | <a href="{{ route('admin.portals.edit', $portal->id) }}">Settings</a></td>
+                        <td>
+                            <a href="{{ route('admin.pages.create', $portal->id) }}" title="Add new page/post"><i class="fa fa-plus hidden-md hidden-lg"></i><span class="hidden-xs hidden-sm"> New Page</span></a> <span class="hidden-xs hidden-sm">|</span>
+                            <a href="{{ route('admin.pages.view', $portal->id) }}" title="View all pages"><i class="fa fa-files-o hidden-md hidden-lg"></i><span class="hidden-xs hidden-sm"> Pages</span></a> <span class="hidden-xs hidden-sm">|</span>
+                            <a href="{{ route('admin.portals.edit', $portal->id) }}" title="Change portal settings"><i class="fa fa-cogs  hidden-md hidden-lg"></i><span class="hidden-xs hidden-sm"> Settings</span></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

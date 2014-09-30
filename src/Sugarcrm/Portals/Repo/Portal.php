@@ -28,4 +28,9 @@ class Portal extends Model
         $this->attributes['slug'] = implode('/', $slugs);
 
     }
+
+    public function attributes()
+    {
+        return $this->morphMany('Sugarcrm\Portals\Repo\Attribute', 'parent');
+    }
 }

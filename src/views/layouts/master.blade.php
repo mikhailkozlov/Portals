@@ -12,7 +12,8 @@
     <!-- Bootstrap core CSS -->
     {{ HTML::style('/packages/sugarcrm/portals/bootstrap/css/bootstrap.min.css') }}
     {{ HTML::style('/packages/sugarcrm/portals/bootstrap/css/bootstrap-theme.min.css') }}
-    {{ HTML::style('/packages/sugarcrm/portals/bootstrap/css/doc.min.css') }}
+    {{ HTML::style('/packages/sugarcrm/portals/font-awesome/css/font-awesome.min.css') }}
+    {{ HTML::style('/packages/sugarcrm/portals/bootstrap/css/docs.min.css') }}
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
