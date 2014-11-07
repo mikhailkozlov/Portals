@@ -4,6 +4,7 @@ use Doctrine\Common\Annotations\Annotation\Attribute;
 use Illuminate\Support\MessageBag,
     Sugarcrm\Portals\Services\Validators\PageValidator,
     Sugarcrm\Portals\Controllers\BaseController,
+    Sugarcrm\Portals\Helpers\MenuHelper,
     View,
     Config,
     Input,
@@ -23,9 +24,9 @@ class PagesController extends BaseController
         \Sugarcrm\Portals\Repo\Page $page,
         \Sugarcrm\Portals\Repo\Attribute $attributes
     ) {
-        $app             = app();
-        $this->portal    = $portal;
-        $this->page      = $page;
+        $app = app();
+        $this->portal = $portal;
+        $this->page = $page;
         $this->attribute = $attributes;
         $this->validator = new PageValidator($app['validator'], new MessageBag);
 
@@ -55,8 +56,8 @@ class PagesController extends BaseController
     public function create($portal_id)
     {
         $status_opt = Config::get('portals::status_options');
-        $types      = Config::get('portals::pages.types');
-        $parents    = $this->page->where('type', '=', Config::get('portals::pages.default'))->lists('title', 'id');
+        $types = Config::get('portals::pages.types');
+        $parents = $this->page->where('type', '=', Config::get('portals::pages.default'))->lists('title', 'id');
 
         $this->layout->content = View::make(
             Config::get('portals::pages.admin.create', 'portals::admin.pages.create'),
@@ -71,7 +72,7 @@ class PagesController extends BaseController
      */
     public function store($portal_id)
     {
-        $input         = Input::only('slug', 'title', 'content', 'excerpt', 'status');
+        $input = Input::only('slug', 'title', 'content', 'excerpt', 'parent_id', 'status');
         $input['slug'] = Str::slug($input['slug']);
         if (empty($input['slug'])) {
             $input['slug'] = Str::slug($input['title']);
@@ -112,12 +113,16 @@ class PagesController extends BaseController
      */
     public function edit($portal_id, $id)
     {
-        $page       = $this->page->find($id);
+        $page = $this->page->find($id);
         $status_opt = Config::get('portals::status_options', array());
         $attributes = Config::get('portals::pages.attributes.' . $page->type, array());
 
-        $types   = Config::get('portals::pages.types');
-        $parents = $this->page->where('type', '=', Config::get('portals::pages.default'))->lists('title', 'id');
+        $types = Config::get('portals::pages.types');
+        $parentPages = $this->page->where('type', '=', Config::get('portals::pages.default'))->get();
+
+        $allParents = new MenuHelper($parentPages);
+        $parents = array(0 => '- Select -');
+        $parents = array_merge($parents, $allParents->makeFlatArray());
 
         $this->layout->content = View::make(
             Config::get('portals::pages.admin.edit', 'portals::admin.pages.edit'),
@@ -134,12 +139,16 @@ class PagesController extends BaseController
      */
     public function update($portal_id, $id)
     {
-        $input         = Input::only('slug', 'title', 'content', 'excerpt', 'status', 'type', 'parent_id', 'attributes');
+        $input = Input::only('slug', 'title', 'content', 'excerpt', 'status', 'type', 'parent_id', 'attributes');
         $input['slug'] = Str::slug($input['slug']);
         if (!$this->validator->with($input)->forUpdate($id)) {
             return Redirect::back()->withInput()->withErrors($this->validator->getErrors());
         }
         $page = $this->page->find($id);
+
+        if ($input['parent_id'] == $page->id) {
+            unset($input['parent_id']);
+        }
 
         $page->update($input);
 

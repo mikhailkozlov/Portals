@@ -27,7 +27,7 @@ class BaseController extends Controller
      */
     protected function setupLayout()
     {
-        $this->layout = Config::get('portals::layouts.master');
+        //$this->layout = $this->layout; //Config::get('portals::layouts.master');
 
         if (!is_null($this->layout)) {
             $this->layout = View::make($this->layout);

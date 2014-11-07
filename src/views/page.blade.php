@@ -9,7 +9,7 @@
         {{ $page->content }}
     </div>
     <div class="col-xs-12 col-sm-3 col-lg-3 col-md-3">
-        <h3>Quick Links</h3>
+        @include(Config::get('portals::layouts.portals.sidebar','portals::partials.sidebar'),$page)
     </div>
 </div>
 @stop

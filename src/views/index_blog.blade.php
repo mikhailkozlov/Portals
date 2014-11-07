@@ -9,12 +9,7 @@
         @if(!$pages->isEmpty())
 
             @foreach($pages as $i=>$page)
-                <article>
-                    <h3>{{ $page->title }}</h3>
-                    <div class="datetime muted">{{ $page->created_at->format('F j, Y') }}</div>
-                    <p>{{ $page->excerpt }}</p>
-                    <p><a href="{{ url($portal->slug.'/'.$page->slug) }}">Read More</a></p>
-                </article>
+                @include(Config::get('portals::layouts.portals.blog_post','portals::partials.blog_post'),$page)
             @endforeach
 
             {{ $pages->links() }}
@@ -23,7 +18,7 @@
         @endif
     </div>
     <div class="col-xs-12 col-sm-3 col-lg-3 col-md-3">
-        <h3>Quick Links</h3>
+        @include(Config::get('portals::layouts.portals.sidebar','portals::partials.sidebar'),$page)
     </div>
 </div>
 @stop

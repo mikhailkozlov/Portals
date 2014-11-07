@@ -36,13 +36,19 @@
             @endforeach
 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     {{ Former::text('slug','Page Url')->required()->help('Please only provide desired page URL not full path. If no URL provided, it will be generated from title.') }}
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
+                    {{ Former::select('parent_id','Parent Page',$parents)->help('You nest pages using Parent setting') }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
                     {{ Former::select('type','Page Type')->required()->options($types)->help('By default pages of type Blog will be displayed on front page of the portal. Pages are regular html pages and will be organized in a tree.')  }}
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     {{ Former::select('status','Status')->required()->options($status_opt)->help('Only published pages visible to visitors.') }}
                 </div>
             </div>

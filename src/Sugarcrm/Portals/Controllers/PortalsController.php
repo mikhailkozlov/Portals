@@ -4,8 +4,6 @@ use Sugarcrm\Portals\Helpers\MenuHelper;
 
 class PortalsController extends BaseController
 {
-    protected $layout = 'layouts.master';
-
     protected $portal;
 
     public function __construct(\Sugarcrm\Portals\Repo\Portal $portal)
@@ -21,15 +19,19 @@ class PortalsController extends BaseController
      *
      * @return mixed
      */
-    public function index()
+    public function index($slug = null)
     {
-        $portal = $this->portal->where('slug','=',\Request::path())->first();
+        if (is_null($slug)) {
+            $slug = \Request::path();
+        }
 
-        if(!$portal){
+        $portal = $this->portal->where('slug', '=', $slug)->first();
+
+        if (!$portal) {
             return \App::abort('404');
         }
         $menu = array();
-        if($portal->page_id > 0) {
+        if ($portal->page_id > 0) {
             $portal->frontPage;
             if (!is_null($portal->frontPage)) {
                 $portal->title = $portal->frontPage->title;
@@ -42,12 +44,21 @@ class PortalsController extends BaseController
                     'portalMenu' => $menu,
                 )
             );
-        }else{
+        } else {
+
+            $blogPosts = $portal->pages()
+                ->with('attributes')
+                ->whereType('blog')
+                ->whereStatus('published')
+                ->orderBy('created_at','DESC')
+                ->paginate(10);
+
+
             $this->layout->content = \View::make(
-                \Config::get('portals::portals.views.blog', 'portals::index_blog'),
+                \Config::get('portals::layouts.portals.blog', 'portals::index_blog'),
                 array(
                     'portal'     => $portal,
-                    'pages'      => $portal->pages()->whereType('blog')->whereStatus('published')->paginate(10),
+                    'pages'      => $blogPosts,
                     'portalMenu' => $menu,
                 )
             );

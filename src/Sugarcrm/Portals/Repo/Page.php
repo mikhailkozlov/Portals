@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    protected $fillable = array('slug', 'title', 'content', 'excerpt', 'status', 'user_id', 'page_id', 'type');
+    protected $fillable = array('slug', 'title', 'content', 'excerpt', 'status', 'user_id', 'page_id',  'parent_id', 'type');
 
     public function portal()
     {
