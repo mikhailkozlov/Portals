@@ -17,17 +17,15 @@ Content Pages - Admin -
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-sm-5">Page Name</th>
-                    <th class="col-sm-2">Path</th>
+                    <th class="col-sm-9">Page Name</th>
                     <th class="col-sm-2">Status</th>
-                    <th class="col-sm-3">Actions</th>
+                    <th class="col-sm-1">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pages as $page)
                     <tr>
                         <td>{{ $page->title }}</td>
-                        <td>{{ $page->slug }}</td>
                         <td>{{ $page->status }}</td>
                         <td><a href="{{ route('admin.pages.edit', array($page->portal_id, $page->id)) }}">Edit</a></td>
                     </tr>

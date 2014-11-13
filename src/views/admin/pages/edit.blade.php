@@ -11,7 +11,7 @@
 
 @section('container')
 <div class="row">
-    <div class="col-sm-9">
+    <div class="col-sm-12">
 
         <h1>{{{ $page->title ? $page->title : 'Create page' }}}</h1>
 
@@ -57,10 +57,6 @@
 
         {{Former::close()}}
 
-    </div>
-    <div class="col-sm-3">
-        <h4>Help</h4>
-        <p>Basic page settings.</p>
     </div>
 </div>
 @stop
