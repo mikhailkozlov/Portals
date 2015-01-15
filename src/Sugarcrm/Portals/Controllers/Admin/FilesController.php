@@ -2,7 +2,6 @@
 
 use Illuminate\Support\MessageBag,
     Sugarcrm\Portals\Services\Validators\FileValidator,
-    Sugarcrm\Portals\Controllers\BaseController,
     App,
     View,
     Config,
@@ -12,7 +11,7 @@ use Illuminate\Support\MessageBag,
     Redirect,
     Response;
 
-class FilesController extends BaseController
+class FilesController extends BaseAdminController
 {
     protected $file;
     protected $validator;

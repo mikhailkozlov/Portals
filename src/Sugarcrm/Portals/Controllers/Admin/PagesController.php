@@ -1,9 +1,7 @@
 <?php namespace Sugarcrm\Portals\Controllers\Admin;
 
-use Doctrine\Common\Annotations\Annotation\Attribute;
 use Illuminate\Support\MessageBag,
     Sugarcrm\Portals\Services\Validators\PageValidator,
-    Sugarcrm\Portals\Controllers\BaseController,
     Sugarcrm\Portals\Helpers\MenuHelper,
     View,
     Config,
@@ -11,7 +9,7 @@ use Illuminate\Support\MessageBag,
     Str,
     Redirect;
 
-class PagesController extends BaseController
+class PagesController extends BaseAdminController
 {
 
     protected $portal;

@@ -2,14 +2,13 @@
 
 use Illuminate\Support\MessageBag,
     Sugarcrm\Portals\Services\Validators\PortalValidator,
-    Sugarcrm\Portals\Controllers\BaseController,
     View,
     Config,
     Input,
     Str,
     Redirect;
 
-class PortalsController extends BaseController
+class PortalsController extends BaseAdminController
 {
 
     protected $portal;
