@@ -33,5 +33,4 @@ class FilesController extends BaseController
 
         return Response::download($tmpfname, $file->filename);
     }
-
 }

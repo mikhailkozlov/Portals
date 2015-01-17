@@ -6,6 +6,7 @@
     array('as' => 'portals.files.download', 'uses' => 'Sugarcrm\Portals\Controllers\FilesController@get')
 )->where(array('id' => '[0-9]+'));
 
+
 /********************************
  * Admin system
  ********************************/
@@ -130,5 +131,12 @@
                 'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@update'
             )
         );
+
+        \Route::get(
+            'files/manager',
+            array('as' => 'admin.files.manager', 'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@manager')
+        );
+
+
     }
 );
