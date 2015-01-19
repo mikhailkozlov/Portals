@@ -43,14 +43,14 @@ class PortalsServiceProvider extends ServiceProvider
                     array(
                         'as'     => 'public.' . $p->slug . '.index',
                         'uses'   => 'Sugarcrm\Portals\Controllers\PortalsController@index',
-                        'before' => 'auth'
+                        'before' => 'portals.auth' // you should be able to use that even to control access.
                     )); // You may use get/post
                 \Route::get(
                     $p->slug . '/{page_slug}',
                     array(
                         'as'     => 'public.' . $p->slug . '.index',
                         'uses'   => 'Sugarcrm\Portals\Controllers\PagesController@show',
-                        'before' => 'auth'
+                        'before' => 'portals.auth'// you should be able to use that even to control access.
                     )); // You may use get/post
             }
         }catch (\Exception $e){

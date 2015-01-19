@@ -134,9 +134,10 @@
 
         \Route::get(
             'files/manager',
-            array('as' => 'admin.files.manager', 'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@manager')
+            array(
+                'as'   => 'admin.files.manager',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\FilesController@manager'
+            )
         );
-
-
     }
 );
