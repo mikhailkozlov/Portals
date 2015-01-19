@@ -1,5 +1,6 @@
 <?php namespace Sugarcrm\Portals;
 
+use Aws\CloudFront\Exception\Exception;
 use Illuminate\Support\ServiceProvider,
     Sugarcrm\Portals\Repo\Portal,
     Sugarcrm\Portals\Services\Storage\Storage;
@@ -28,17 +29,32 @@ class PortalsServiceProvider extends ServiceProvider
 
         /**
          * Register routes
+         *
+         * This whole section needs to be moved so it does not get boostrapped on CLI
+         *
          */
-        $portals = Portal::all(array('slug'));
+        try {
+            $portals = Portal::all(array('slug'));
 
-        // insert routes into app
-        foreach ($portals as $p) {
-            // @TODO  - add routes and make sure we enforce permissions
-            \Route::get($p->slug, 'Sugarcrm\Portals\Controllers\PortalsController@index'); // You may use get/post
-            \Route::get(
-                $p->slug . '/{page_slug}',
-                'Sugarcrm\Portals\Controllers\PagesController@show'
-            ); // You may use get/post
+            // insert routes into app
+            foreach ($portals as $p) {
+                // @TODO  - add routes and make sure we enforce permissions
+                \Route::get($p->slug,
+                    array(
+                        'as'     => 'public.' . $p->slug . '.index',
+                        'uses'   => 'Sugarcrm\Portals\Controllers\PortalsController@index',
+                        'before' => 'auth'
+                    )); // You may use get/post
+                \Route::get(
+                    $p->slug . '/{page_slug}',
+                    array(
+                        'as'     => 'public.' . $p->slug . '.index',
+                        'uses'   => 'Sugarcrm\Portals\Controllers\PagesController@show',
+                        'before' => 'auth'
+                    )); // You may use get/post
+            }
+        }catch (\Exception $e){
+            // skip
         }
     }
 
