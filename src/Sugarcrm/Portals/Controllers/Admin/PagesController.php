@@ -111,7 +111,8 @@ class PagesController extends BaseAdminController
      */
     public function edit($portal_id, $id)
     {
-        $page = $this->page->find($id);
+        $page = $this->page->with('portal')->find($id);
+
         $status_opt = Config::get('portals::status_options', array());
         $attributes = Config::get('portals::pages.attributes.' . $page->type, array());
 

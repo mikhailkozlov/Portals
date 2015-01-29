@@ -13,14 +13,16 @@ class PagesController extends BaseController
     public function __construct(Portal $portal, Page $page)
     {
         $this->portal = $portal;
-        $this->page   = $page;
+        $this->page = $page;
 
         // get all segments
         $segments = \Request::segments();
         // remove last element
         array_pop($segments);
         // find portal
-        $this->portal = $portal->where('slug', '=', implode('/', $segments))->first(); //
+        $this->portal = $portal->where('slug', '=', implode('/', $segments))
+            ->where('status', 'published')
+            ->first(); //
 
         if (is_null($this->portal)) {
             return \App::abort('404');
@@ -40,7 +42,14 @@ class PagesController extends BaseController
     public function show($page_slug)
     {
         // find page in the portal
-        $page = $this->portal->pages()->where('slug', '=', $page_slug)->first();
+        $pageQuery = $this->portal->pages()
+            ->where('slug', $page_slug);
+
+        if (!\Input::has('preview')) {
+            $pageQuery->where('status', 'published');
+        }
+
+        $page = $pageQuery->first();
 
         if (is_null($page)) {
             return \App::abort('404');

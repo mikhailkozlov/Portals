@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <h1>{{{ $page->title ? $page->title : 'Create page' }}}</h1>
+        <h1>Edit page <small class="pull-right"><a href="{{ url($page->portal->slug.'/'.$page->slug .'?preview=test') }}" data-toggle="tooltip" title="Preview"><i class="fa fa-external-link"></i></a></small></h1>
 
         {{Former::vertical_open( route('admin.pages.update', array($page->portal_id, $page->id)), 'PUT') }}
 
