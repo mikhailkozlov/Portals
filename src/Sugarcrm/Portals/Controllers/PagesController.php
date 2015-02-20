@@ -1,14 +1,14 @@
 <?php namespace Sugarcrm\Portals\Controllers;
 
 use Sugarcrm\Portals\Repo\Portal,
-    Sugarcrm\Portals\Repo\Page,
-    Sugarcrm\Portals\Helpers\MenuHelper;
+  Sugarcrm\Portals\Repo\Page,
+  Sugarcrm\Portals\Helpers\MenuHelper;
 
 class PagesController extends BaseController
 {
     protected $layout = 'layouts.master';
-    protected $portal;
-    protected $page;
+
+    public $page;
 
     public function __construct(Portal $portal, Page $page)
     {
@@ -21,12 +21,18 @@ class PagesController extends BaseController
         array_pop($segments);
         // find portal
         $this->portal = $portal->where('slug', '=', implode('/', $segments))
-            ->where('status', 'published')
-            ->first(); //
+          ->where('status', 'published')
+          ->first(); //
 
         if (is_null($this->portal)) {
             return \App::abort('404');
         }
+        $widgets = $this->portal->widgets()
+          ->where('status', 'published')
+          ->orderBy('menu_order')
+          ->get();
+
+        \View::share('widgets', $widgets);
 
         parent::__construct();
     }
@@ -43,7 +49,7 @@ class PagesController extends BaseController
     {
         // find page in the portal
         $pageQuery = $this->portal->pages()
-            ->where('slug', $page_slug);
+          ->where('slug', $page_slug);
 
         if (!\Input::has('preview')) {
             $pageQuery->where('status', 'published');
@@ -57,12 +63,12 @@ class PagesController extends BaseController
 
         // build content
         $this->layout->content = \View::make(
-            'portals::page',
-            array(
-                'portal'     => $this->portal,
-                'page'       => $page,
-                'portalMenu' => array(),
-            )
+          'portals::page',
+          array(
+            'portal'     => $this->portal,
+            'page'       => $page,
+            'portalMenu' => array(),
+          )
         );
     }
 }

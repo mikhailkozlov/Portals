@@ -11,7 +11,6 @@ use Illuminate\Support\MessageBag,
 class PortalsController extends BaseAdminController
 {
 
-    protected $portal;
     protected $validator;
 
     public function __construct(\Sugarcrm\Portals\Repo\Portal $portal)

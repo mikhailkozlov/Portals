@@ -1,15 +1,16 @@
 <?php namespace Sugarcrm\Portals\Controllers;
 
 use Illuminate\Routing\Controller,
-    App,
-    View,
-    Config;
+  App,
+  View,
+  Config;
 
 class BaseController extends Controller
 {
-    protected $user = null;
+    protected $user   = null;
     protected $auth;
     protected $layout = 'portals::layouts.master';
+    public    $portal;
 
     public function __construct()
     {
@@ -41,6 +42,8 @@ class BaseController extends Controller
 
     protected function userGroupsList()
     {
-        return $this->auth->getGroupProvider()->createModel()->lists('name', 'id');
+        return $this->auth->getGroupProvider()
+          ->createModel()
+          ->lists('name', 'id');
     }
 }

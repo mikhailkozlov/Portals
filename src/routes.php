@@ -88,6 +88,43 @@
             )
         );
 
+        // Widget routes
+        \Route::get(
+            'portals/{portal_id}/widgets',
+            array(
+                'as' => 'admin.widgets.view',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\WidgetsController@index'
+            )
+        );
+        \Route::post(
+            'portals/{portal_id}/widgets',
+            array(
+                'as' => 'admin.widgets.store',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\WidgetsController@store'
+            )
+        );
+        \Route::get(
+            'portals/{portal_id}/widgets/create',
+            array(
+                'as' => 'admin.widgets.create',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\WidgetsController@create'
+            )
+        );
+        \Route::get(
+            'portals/{portal_id}/widgets/{id}/edit',
+            array(
+                'as' => 'admin.widgets.edit',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\WidgetsController@edit'
+            )
+        );
+        \Route::put(
+            'portals/{portal_id}/widgets/{id}/update',
+            array(
+                'as' => 'admin.widgets.update',
+                'uses' => 'Sugarcrm\Portals\Controllers\Admin\WidgetsController@update'
+            )
+        );
+
         // Files routes
         \Route::get(
             'files',

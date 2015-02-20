@@ -19,6 +19,11 @@ class Portal extends Model
         return $this->hasMany('Sugarcrm\Portals\Repo\Page');
     }
 
+    public function widgets()
+    {
+        return $this->hasMany('Sugarcrm\Portals\Repo\Widget')->where('type', 'widget');
+    }
+
     public function setSlugAttribute($value)
     {
         $slugs = explode('/', trim($value, '/'));
